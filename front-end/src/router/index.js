@@ -11,6 +11,11 @@ export const router = createRouter({
             name: 'alumnos',
             component: () => import('@/components/students/layouts/StudentsLayout.vue'),
             children: [
+                { 
+                    path: '/',
+                    name: 'home',
+                    component: () => import('@/components/students/pages/Home.vue'),
+                  },
               { 
                 path: '/alumnos',
                 name: 'students',

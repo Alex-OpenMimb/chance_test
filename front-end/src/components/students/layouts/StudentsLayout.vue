@@ -2,7 +2,11 @@
     <div class="flex flex-col h-screen">
       <!-- Header -->
       <header class="bg-blue-500 flex items-center h-14 px-4 border-b border-gray-300 sm:h-16 md:px-6 lg:px-8">
-        <nav class="flex flex-col ml-auto space-x-4 items-end h-10 sm:space-x-6">
+        <nav class="flex  ml-auto space-x-4 items-end h-10 sm:space-x-6">
+          <div class="space-x-4 text-white">
+              <RouterLink :to="{ name: 'students' }"> Alumnos </RouterLink>
+          </div>
+          
           <div class="space-x-4">
             <button type="button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Logout</button>
           </div>
