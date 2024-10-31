@@ -8,7 +8,7 @@
           </div>
           
           <div class="space-x-4">
-            <button type="button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Logout</button>
+            <button type="button" @click="logout" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Logout</button>
           </div>
         </nav>
       </header>
@@ -28,4 +28,31 @@
       <!-- End Footer -->
     </div>
   </template>
+
+<script>
+import { useRouter } from "vue-router"
+import { useStore } from 'vuex'
+import { computed } from 'vue'
+export default {
+    setup() {
+
+        const router = useRouter()
+        const store = useStore();
+        const token = computed(() => store.getters.token);
+
+        function logout(){
+            store.dispatch('removeToken');
+            router.push({name:'login'})
+        }
+
+
+        return {
+            logout,
+            token
+
+        }
+
+    }
+}
+</script>
   

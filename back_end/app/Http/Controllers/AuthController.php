@@ -27,7 +27,7 @@ class AuthController extends Controller
         if (!$token) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Unauthorized',
+                'message' => 'El usuario o contraseña son incorrectos',
             ], 401);
         }
 
@@ -48,7 +48,15 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
-        ]);
+        ],
+            [
+                'name.required' => 'El nombre es obligatorio.',
+                'email.required' => 'El campo de correo electrónico es obligatorio.',
+                'email.email' => 'Ingrese un email válido',
+                'email.unique' => 'El email suministrado  ya está en uso',
+                'password.required' => 'La contraseña es obligatoria.',
+                'password.min' => 'La contraseña debe ser de al menos 6 caracteres.',
+            ]);
 
         $user = User::create([
             'name' => $request->name,
