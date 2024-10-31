@@ -119,8 +119,8 @@ const store = createStore({
                     }
                 }).then( response =>{
                     let data = response.data.data
-                    console.log(data)
-                     commit('SET_GRADES',data)
+                    
+                    commit('SET_STUDENTS',data)
                         resolve(response)
                 }).catch(error => {
                     reject(error) 

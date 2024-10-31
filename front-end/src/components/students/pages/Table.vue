@@ -9,7 +9,8 @@
                     <select v-model="filterGrade"
                     @change="onGradeChange"
                     name="" id="" class="mb-2 bg-gray-300 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
-                        <option   v-for="(grade, index) in grades" :key="index" :value="grade.id" >
+                    <option value="">Todos los Grados</option>
+                    <option   v-for="(grade, index) in grades" :key="index" :value="grade.id" >
                                 {{ grade.grade }}
                             </option>
                     </select>
@@ -82,7 +83,7 @@ export default {
         onMounted(() => {
 
             store.dispatch('fetchStudents').then(()=>{
-                console.log('successfully')
+              
             }).catch((error)=>{
                 if( error.response.statusText === 'Unauthorized' ){
                     errorAuht.value = 'La sesión se ha terminado.'
@@ -101,10 +102,13 @@ export default {
         const openform = () => {
             router.push({name:'form'})
         };
+
         const onGradeChange = () => {
-            // Aquí puedes disparar el dispatch o cualquier otra acción que necesites
-            console.log('Grado seleccionado:', filterGrade.value);
-            store.dispatch('filterByGrade', filterGrade.value);
+            store.dispatch('filterByGrade', filterGrade.value).then(()=>{
+                store.dispatch('fetchGrades')
+                console.log( students.value )
+            
+            })
         };
 
 
