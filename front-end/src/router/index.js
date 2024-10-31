@@ -58,7 +58,6 @@ import NotFound404 from '@/components/common/pages/NotFound404.vue';
             // Not Found
      {
         path: '/:pathMatch(.*)*',
-        // redirect: '/',
         component: NotFound404,
       },
 

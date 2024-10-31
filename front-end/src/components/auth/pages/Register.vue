@@ -5,6 +5,7 @@
       <div class="mb-4">
         <label for="name" class="block text-gray-600">Nombre*</label>
         <input
+        required
          v-model="form.name"
           type="text"
           id="name"
@@ -18,6 +19,7 @@
       <div class="mb-4">
         <label for="email" class="block text-gray-600">Email*</label>
         <input
+        required
         v-model="form.email"
           type="email"
           id="email"
@@ -30,6 +32,7 @@
       <div class="mb-4">
         <label for="password" class="block text-gray-600">Contraseña*</label>
         <input
+        required
         v-model="form.password"
           type="password"
           id="password"
@@ -91,7 +94,7 @@ import { useStore } from 'vuex'
                 })
               }catch(err){
                 console.log(err)
-                
+    
                     errors.value = err.response.data.errors
               }
         }

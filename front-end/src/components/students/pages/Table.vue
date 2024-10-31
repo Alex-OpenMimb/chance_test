@@ -3,11 +3,12 @@
         <div class="mt-[100px]">
             <div class="flex justify-between">
                 <h1 class="font-bold text-xl">Alumnos</h1>
+                <div class="text-red-500" > {{ errorAuht }} </div>
                 <button @click="openModal" type="button" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
                     Crear
                 </button>
             </div>
-
+              
             <table class="w-full relative mt-4" x-data="">
                 <thead class="border-b border-neutral-200 dark:border-neutral-700">
                     <tr class="group">
@@ -62,17 +63,43 @@
 </template>
 
 <script>
-import { ref,reactive } from 'vue';
+import { ref,reactive, computed, onMounted } from 'vue';
+import { useStore  } from 'vuex'
+import { useRouter } from "vue-router"
 
 export default {
     setup() {
-       
-        const isModalOpen = ref(false);
+        //Data
+        const store = useStore()
+        const router = useRouter()
+        const isModalOpen = ref(false)
+        const errorAuht = ref('')
         const newStudent = reactive({
             name: '',
             birthdate: '',
        
         });
+    
+
+        onMounted(() => {
+            store.dispatch('fetchStudents').then(()=>{
+                
+            }).catch((err)=>{
+                if( err.response.statusText === 'Unauthorized' ){
+                    errorAuht.value = 'La sesión se ha terminado.'
+                    setTimeout(()=>{
+                     router.push({name:'login'})
+                    },4000)
+                    
+                }
+                
+            })
+    
+        })
+
+
+
+
         const openModal = () => {
             isModalOpen.value = true;
         };
@@ -89,6 +116,7 @@ export default {
         return {
             isModalOpen,
             newStudent,
+            errorAuht,
             openModal,
             closeModal,
             createStudent

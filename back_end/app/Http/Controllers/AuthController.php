@@ -20,7 +20,12 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
-        ]);
+        ],
+            [
+                'email.required' => 'El campo de correo electrónico es obligatorio.',
+                'email.email' => 'Ingrese un email válido',
+                'password.required' => 'La contraseña es obligatoria.',
+            ]);
         $credentials = $request->only('email', 'password');
 
         $token = Auth::attempt($credentials);
@@ -45,12 +50,13 @@ class AuthController extends Controller
 
     public function register(Request $request){
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|min:2',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
         ],
             [
                 'name.required' => 'El nombre es obligatorio.',
+                'name.min' => 'El nombre debe contener al menos 2 caracteres.',
                 'email.required' => 'El campo de correo electrónico es obligatorio.',
                 'email.email' => 'Ingrese un email válido',
                 'email.unique' => 'El email suministrado  ya está en uso',

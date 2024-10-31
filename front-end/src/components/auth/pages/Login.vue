@@ -6,6 +6,7 @@
         <label for="email" class="block text-gray-600">Email</label>
         <input
         v-model="form.email"
+        required
           type="email"
           id="email"
           name="email"
@@ -18,6 +19,7 @@
         <label for="password" class="block text-gray-600">Contraseña</label>
         <input
         v-model="form.password"
+        required
           type="password"
           id="password"
           name="password"
@@ -33,7 +35,11 @@
         Login
       </button>
     </form>
-    <p class="text-red-500 mt-4">{{ error }} *</p>
+    <div class="mt-4">
+        <p class="text-red-500 text-sm " v-for="error in errors" :key="error">
+                    <span v-for="err in error" :key="err">{{ err }}</span>
+                </p>
+       </div>
     <!-- Sign up  Link -->
     <div class="mt-6 text-blue-500 text-center">
       <RouterLink :to="{ name: 'register' }" class="hover:underline">Registrarse</RouterLink>
@@ -57,7 +63,7 @@
               password: ''
           });
   
-          let error = ref('');
+          const errors = ref('');
 
            //Config axios
         const api = axios.create({
@@ -74,7 +80,7 @@
   
               } catch (err) {
                
-                  error.value = err.response.data.message;
+                errors.value = err.response.data.errors
                   console.log(error)
   
               }
@@ -84,7 +90,7 @@
           return {
               form,
               login,
-              error,
+              errors,
   
           }
   
