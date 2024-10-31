@@ -34,6 +34,9 @@
                         <th class="px-2 text-left text-black bg-neutral-50 dark:text-white dark:bg-neutral-800">Fecha de ingreso</th>
                     </tr>
                 </thead>
+                <div v-if="students.length === 0" class="flex justify-center">
+                        <p class="text-center text-red-500">Sin Registros</p>
+                    </div>
                 <tbody>
                     <tr v-for="student in students" :key="student.id" class="group" wire:key="">
                         <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">{{ student.name }}</td>
@@ -104,11 +107,15 @@ export default {
         };
 
         const onGradeChange = () => {
-            store.dispatch('filterByGrade', filterGrade.value).then(()=>{
-                store.dispatch('fetchGrades')
-                console.log( students.value )
-            
+            console.log( filterGrade.value )
+            if(filterGrade.value === '' ){
+                store.dispatch('fetchStudents')
+            }else{
+                store.dispatch('filterByGrade', filterGrade.value).then(()=>{
+                
             })
+            }
+           
         };
 
 
