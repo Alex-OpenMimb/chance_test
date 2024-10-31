@@ -9,7 +9,11 @@ const api = axios.create({
 
 const store = createStore({
     state:{
-        token : localStorage.getItem('token') || '',
+        token : localStorage.getItem('token') || 0,
+        students : [],
+        grades : [],
+        error: null,
+         
    
     },
     mutations:{
@@ -17,6 +21,18 @@ const store = createStore({
         UPDATE_TOKEN(state,payload){
             state.token = payload
         },
+        SET_STUDENTS(state, payload){
+            state.students = payload
+        },
+        SET_GRADES(state, payload){
+            state.grades = payload
+        },
+        SET_ERROR( state, message ){
+            state.error = message
+        },
+        CLEAR_ERROR(state) {
+            state.error = null
+          }
        
      
     },
@@ -39,24 +55,89 @@ const store = createStore({
                         Authorization: `Bearer ${token}`
                     }
                 }).then( response =>{
-                        console.log(response)
+                    
+                        let data = response.data.data
+                     
+                        commit('SET_STUDENTS',data)
                         resolve(response)
                 }).catch(error => {
                 
                     reject(error) 
                 }) 
                 
-            })
-
-
-
-
-          
+            }) 
         },
+
+        fetchGrades({commit, state}){
+            const token = state.token;
+            return new Promise((resolve, reject) => {
+                api.get(`api/grades`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }).then( response =>{
+                        let data = response.data.data
+
+                        commit('SET_GRADES',data)
+                        resolve(response)
+                }).catch(error => {
+                    reject(error) 
+                }) 
+                
+            }) 
+        },
+        storeStudent({commit,state}, data){
+            const token = state.token;
+            return new Promise((resolve, reject) => {
+                api.post(`api/crear-alumno`,data,{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }).then( response =>{
+                    let message = response.data.message
+    
+                        if( !response.data.response ) {
+                            commit('SET_ERROR',message);
+                        }else{
+                            commit('SET_ERROR',null);
+                            resolve(response)
+                        }
+                        resolve(response)
+                }).catch(error => {
+                    reject(error) 
+                }) 
+                
+            })
+        },
+
+        filterByGrade({commit,state}, idGrade){
+            const token = state.token;
+            return new Promise((resolve, reject) => {
+                api.get(`api/consultar-alumno/${idGrade}`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }).then( response =>{
+                    let data = response.data.data
+                    console.log(data)
+                     commit('SET_GRADES',data)
+                        resolve(response)
+                }).catch(error => {
+                    reject(error) 
+                }) 
+                
+            })
+        },
+        clearError({commit}){
+            commit('CLEAR_ERROR');
+        }
     },
 
     getters:{
-  
+        token: state => state.token,
+        students: state=> state.students,
+        grades: state=> state.grades,
+        error: state => state.error
     }
 
 

@@ -1,14 +1,26 @@
 <template>
-    <div>
-        <div class="mt-[100px]">
+    <div class="container flex justify-center ">
+        <div class="mt-[100px] ">
             <div class="flex justify-between">
                 <h1 class="font-bold text-xl">Alumnos</h1>
                 <div class="text-red-500" > {{ errorAuht }} </div>
-                <button @click="openModal" type="button" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+
+                <div class="">
+                    <select v-model="filterGrade"
+                    @change="onGradeChange"
+                    name="" id="" class="mb-2 bg-gray-300 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                        <option   v-for="(grade, index) in grades" :key="index" :value="grade.id" >
+                                {{ grade.grade }}
+                            </option>
+                    </select>
+                  
+                </div>
+
+               
+            </div>
+            <button @click="openform" type="button" class="  bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
                     Crear
                 </button>
-            </div>
-              
             <table class="w-full relative mt-4" x-data="">
                 <thead class="border-b border-neutral-200 dark:border-neutral-700">
                     <tr class="group">
@@ -22,48 +34,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="group" wire:key="">
-                        <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">Andres</td>
-                        <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">Grado</td>
-                        <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">Cauarot</td>
-                        <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">Cauarot</td>
-                        <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">Cauarot</td>
-                        <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">Cauarot</td>
-                        <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">Cauarot</td>
+                    <tr v-for="student in students" :key="student.id" class="group" wire:key="">
+                        <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">{{ student.name }}</td>
+                        <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">{{ student.born_date }}</td>
+                        <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">{{ student.father_name }}</td>
+                        <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">{{ student.mother_name }}</td>
+                        <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">{{ student.grade }}</td>
+                        <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">{{ student.section }}</td>
+                        <td class="px-2 bg-neutral-100 group-odd:bg-white group-hover:bg-neutral-200 dark:bg-neutral-800 dark:group-odd:bg-neutral-900 dark:group-hover:bg-neutral-700">{{ student.date_entry }}</td>
+                    
                     </tr>
                 </tbody>
                 <tfoot class="border-t border-neutral-200 dark:border-neutral-700">
                     <tr class="group"></tr>
                 </tfoot>
             </table>
-        </div>
-
-        <!-- Modal -->
-        <div v-if="isModalOpen" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
-                <h2 class="text-2xl font-bold mb-4">Crear Nuevo Alumno</h2>
-                
-                <div class="mb-4">
-                    <label class="block text-gray-700">Nombre:</label>
-                    <input type="text" v-model="newStudent.name" class="w-full px-4 py-2 border rounded-lg">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700">Fecha de Nacimiento:</label>
-                    <input type="date" v-model="newStudent.birthdate" class="w-full px-4 py-2 border rounded-lg">
-                </div>
-        
-            
-                <div class="flex justify-end space-x-2">
-                    <button @click="closeModal" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Cancelar</button>
-                    <button @click="createStudent" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Guardar</button>
-                </div>
-            </div>
-        </div>
+        </div>      
     </div>
 </template>
 
 <script>
-import { ref,reactive, computed, onMounted } from 'vue';
+import { ref,reactive, computed, onMounted,watch } from 'vue';
 import { useStore  } from 'vuex'
 import { useRouter } from "vue-router"
 
@@ -72,20 +63,28 @@ export default {
         //Data
         const store = useStore()
         const router = useRouter()
-        const isModalOpen = ref(false)
         const errorAuht = ref('')
-        const newStudent = reactive({
+        const filterGrade = ref('')
+        const grades = computed(() => store.getters.grades)
+        const students = computed(() => store.getters.students)
+        const form = reactive({
             name: '',
-            birthdate: '',
-       
+            born_date: '',
+            father_name: '',
+            mother_name : '',
+            section : '',
+            date_entry : '',
+            grade_id : '',
+
         });
     
 
         onMounted(() => {
+
             store.dispatch('fetchStudents').then(()=>{
-                
-            }).catch((err)=>{
-                if( err.response.statusText === 'Unauthorized' ){
+                console.log('successfully')
+            }).catch((error)=>{
+                if( error.response.statusText === 'Unauthorized' ){
                     errorAuht.value = 'La sesión se ha terminado.'
                     setTimeout(()=>{
                      router.push({name:'login'})
@@ -94,32 +93,31 @@ export default {
                 }
                 
             })
-    
+
+            store.dispatch('fetchGrades')
+
         })
 
-
-
-
-        const openModal = () => {
-            isModalOpen.value = true;
+        const openform = () => {
+            router.push({name:'form'})
         };
-        const closeModal = () => {
-            isModalOpen.value = false;
+        const onGradeChange = () => {
+            // Aquí puedes disparar el dispatch o cualquier otra acción que necesites
+            console.log('Grado seleccionado:', filterGrade.value);
+            store.dispatch('filterByGrade', filterGrade.value);
         };
-        const createStudent = () => {
-            console.log('Nuevo estudiante:', newStudent.value);
 
-            isModalOpen.value = false;
-            newStudent.value = { name: '', birthdate: '' };
-        };
 
         return {
-            isModalOpen,
-            newStudent,
+            form,
             errorAuht,
-            openModal,
-            closeModal,
-            createStudent
+            students,
+            grades,
+            openform,
+            filterGrade,
+            onGradeChange
+            
+           
         };
     }
 };

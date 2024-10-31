@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\GradeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,6 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::get('alumnos',[StudentController::class,'index']);
+Route::get('grades',[GradeController::class,'index']);
+Route::post('crear-alumno',[StudentController::class,'store']);
+Route::get('consultar-alumno/{idGrado}',[StudentController::class,'search']);

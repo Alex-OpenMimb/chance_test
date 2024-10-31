@@ -25,6 +25,14 @@ import NotFound404 from '@/components/common/pages/NotFound404.vue';
                   requiresAuth:true
               }
               },
+              { 
+                path: '/alumnos/create',
+                name: 'form',
+                component: () => import('@/components/students/pages/Form.vue'),
+                meta: {
+                  requiresAuth:true
+              }
+              },
 
             ],
         },
